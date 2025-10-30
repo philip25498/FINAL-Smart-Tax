@@ -1,0 +1,5 @@
+{
+  "name": "SmartTax: AI-Powered KRA Services",
+  "description": "SmartTax is a modern, AI-powered web application designed to simplify KRA services. It features a Gemini 2.5 Pro powered chatbot for instant assistance, a secure user dashboard for managing tax obligations, and a user-friendly interface for all KRA-related transactions.",
+  "requestFramePermissions": []
+}
