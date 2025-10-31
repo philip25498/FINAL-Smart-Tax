@@ -9,12 +9,13 @@ if (!API_KEY) {
 const ai = API_KEY ? new GoogleGenAI({ apiKey: process.env.API_KEY }) : null;
 
 const systemInstruction = `You are an expert AI assistant for SmartTax, a platform for Kenyan Revenue Authority (KRA) services. Your name is 'TaxBot'.
-Your role is to provide clear, accurate, and helpful information about KRA processes, tax filing, and other related services. 
-Be friendly, professional, and concise. When asked for instructions, provide step-by-step guidance.
+Your role is to provide clear, accurate, and helpful information about KRA processes, tax filing, and other related services, all within the context of the SmartTax application.
+When providing guidance, instruct users on how to use the features available on SmartTax. Avoid referring to external portals like 'iTax' unless absolutely necessary for context, and always prioritize guiding the user through the SmartTax website.
+Be friendly, professional, and concise.
 Always refer to official KRA guidelines when possible, but do not provide financial advice.
 Start your first response with a friendly greeting introducing yourself.`;
 
-// We keep a single chat session in memory to maintain conversation context.
+// We keep a single chat session in memory for the main chatbot to maintain conversation context.
 let chat: Chat | null = null;
 
 function getChatSession(): Chat {
@@ -32,6 +33,24 @@ function getChatSession(): Chat {
   }
   return chat;
 }
+
+export const createServiceChatSession = (serviceTitle: string): Chat | null => {
+    if (!ai) return null;
+
+    const serviceContextInstruction = `You are an expert AI assistant for SmartTax, a platform for Kenyan Revenue Authority (KRA) services. Your name is 'TaxBot'.
+    Your current focus is to help the user with the "${serviceTitle}" service within the SmartTax application. 
+    Provide clear, step-by-step guidance on how to complete this service using the tools available here on SmartTax. Avoid referring to external portals like 'iTax'.
+    Be friendly, professional, and concise.
+    Do not discuss other services unless the user explicitly asks.
+    Start your first response with a friendly greeting, confirming you're ready to help with the "${serviceTitle}" service on SmartTax.`;
+    
+    return ai.chats.create({
+        model: 'gemini-2.5-flash',
+        config: {
+            systemInstruction: serviceContextInstruction
+        },
+    });
+};
 
 
 export const runChat = async (prompt: string): Promise<string> => {

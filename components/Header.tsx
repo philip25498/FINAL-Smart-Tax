@@ -4,6 +4,7 @@ import React from 'react';
 // FIX: Changed import to namespace import to resolve module resolution errors.
 import * as ReactRouterDOM from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import ThemeToggleButton from './ThemeToggleButton';
 
 const Header: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -16,19 +17,19 @@ const Header: React.FC = () => {
     navigate('/login');
   };
 
-  const navLinkClassName = "transition duration-300 hover:text-green-700 text-gray-600";
-  const activeClassName = "text-green-700 font-bold";
+  const navLinkClassName = "transition duration-300 hover:text-green-700 dark:hover:text-green-500 text-gray-600 dark:text-gray-300";
+  const activeClassName = "text-green-700 dark:text-green-400 font-bold";
   
   // FIX: `activeClassName` is deprecated in v6. Use a function in the `className` prop to apply active styles.
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => 
     isActive ? `${navLinkClassName} ${activeClassName}` : navLinkClassName;
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <ReactRouterDOM.NavLink to="/" className="relative inline-block text-2xl font-bold text-green-800">
+        <ReactRouterDOM.NavLink to="/" className="relative inline-block text-2xl font-bold text-green-800 dark:text-green-400">
           <div
-            className="absolute inset-0 opacity-25"
+            className="absolute inset-0 opacity-75 dark:opacity-90"
             style={{
               backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Kenya.svg)',
               backgroundSize: 'cover',
@@ -37,7 +38,7 @@ const Header: React.FC = () => {
             aria-hidden="true"
           ></div>
           <span className="relative">
-            Smart<span className="text-black">Tax</span>
+            Smart<span className="text-black dark:text-white">Tax</span>
           </span>
         </ReactRouterDOM.NavLink>
         <nav className="hidden md:flex items-center space-x-6">
@@ -56,6 +57,7 @@ const Header: React.FC = () => {
               Login / Signup
             </ReactRouterDOM.NavLink>
           )}
+          <ThemeToggleButton />
         </nav>
         {/* Mobile menu could be added here */}
       </div>

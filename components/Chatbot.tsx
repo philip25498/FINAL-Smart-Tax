@@ -33,16 +33,18 @@ const Chatbot: React.FC = () => {
         const userMessage = question || input;
         if (userMessage.trim() === '' || isLoading) return;
 
-        const newMessages: ChatMessage[] = [...messages, { sender: 'user', text: userMessage }];
-        setMessages(newMessages);
+        const userMsg: ChatMessage = { sender: 'user', text: userMessage };
+        setMessages(prevMessages => [...prevMessages, userMsg]);
         setInput('');
         setIsLoading(true);
 
         try {
             const botResponse = await runChat(userMessage);
-            setMessages([...newMessages, { sender: 'bot', text: botResponse }]);
+            const botMsg: ChatMessage = { sender: 'bot', text: botResponse };
+            setMessages(prevMessages => [...prevMessages, botMsg]);
         } catch (error) {
-            setMessages([...newMessages, { sender: 'bot', text: 'Sorry, something went wrong.' }]);
+            const errorMsg: ChatMessage = { sender: 'bot', text: 'Sorry, something went wrong.' };
+            setMessages(prevMessages => [...prevMessages, errorMsg]);
         } finally {
             setIsLoading(false);
         }
@@ -69,25 +71,25 @@ const Chatbot: React.FC = () => {
             </div>
 
             {isOpen && (
-                <div className="fixed bottom-24 right-5 w-full max-w-sm h-3/4 max-h-[600px] bg-white rounded-lg shadow-2xl flex flex-col z-50 transform transition-all duration-300 ease-out origin-bottom-right scale-100">
+                <div className="fixed bottom-24 right-5 w-full max-w-sm h-3/4 max-h-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-2xl flex flex-col z-50 transform transition-all duration-300 ease-out origin-bottom-right scale-100">
                     <header className="bg-green-700 text-white p-4 rounded-t-lg flex justify-between items-center">
                         <h3 className="font-bold text-lg">SmartTax Assistant</h3>
                         <button onClick={toggleChat} className="text-white hover:text-gray-200">&times;</button>
                     </header>
-                    <div ref={chatboxRef} className="flex-1 p-4 overflow-y-auto bg-gray-50">
+                    <div ref={chatboxRef} className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-900">
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex mb-4 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}>
+                                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}`}>
                                     <p className="whitespace-pre-wrap">{msg.text}</p>
                                 </div>
                             </div>
                         ))}
                          {messages.length === 0 && !isLoading && (
-                             <div className="text-center text-gray-500 p-4">
+                             <div className="text-center text-gray-500 dark:text-gray-400 p-4">
                                 <h4 className="font-semibold mb-2">Try asking:</h4>
                                 <div className="flex flex-col space-y-2">
                                     {CHATBOT_SAMPLE_QUESTIONS.map((q, i) => (
-                                        <button key={i} onClick={() => handleSend(q)} className="bg-gray-200 text-sm text-gray-700 p-2 rounded-lg hover:bg-gray-300 transition">
+                                        <button key={i} onClick={() => handleSend(q)} className="bg-gray-200 dark:bg-gray-700 text-sm text-gray-700 dark:text-gray-300 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
                                             {q}
                                         </button>
                                     ))}
@@ -96,17 +98,17 @@ const Chatbot: React.FC = () => {
                          )}
                         {isLoading && (
                             <div className="flex justify-start mb-4">
-                                <div className="bg-gray-200 text-gray-800 px-4 py-2 rounded-2xl">
+                                <div className="bg-gray-200 dark:bg-gray-700 text-gray-800 px-4 py-2 rounded-2xl">
                                     <div className="flex items-center space-x-2">
-                                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
-                                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse delay-75"></div>
-                                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse delay-150"></div>
+                                        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-pulse"></div>
+                                        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-pulse delay-75"></div>
+                                        <div className="w-2 h-2 bg-gray-500 dark:bg-gray-400 rounded-full animate-pulse delay-150"></div>
                                     </div>
                                 </div>
                             </div>
                         )}
                     </div>
-                    <div className="p-4 border-t bg-white rounded-b-lg">
+                    <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-b-lg">
                         <div className="flex">
                             <input
                                 type="text"
@@ -114,7 +116,7 @@ const Chatbot: React.FC = () => {
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyPress={handleKeyPress}
                                 placeholder="Ask a question..."
-                                className="flex-1 p-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 disabled={isLoading}
                             />
                             <button

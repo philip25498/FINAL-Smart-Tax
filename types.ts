@@ -1,3 +1,5 @@
+// FIX: Import React to resolve 'Cannot find namespace React' error for React.ReactNode type.
+import React from 'react';
 
 export interface User {
   email: string;
@@ -28,4 +30,9 @@ export interface Service {
     title: string;
     description: string;
     icon: React.ReactNode;
+}
+
+export interface ThemeContextType {
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
 }

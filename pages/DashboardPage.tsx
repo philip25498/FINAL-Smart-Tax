@@ -75,8 +75,8 @@ const DashboardPage: React.FC = () => {
     return (
         <div className="py-8">
             <div className="mb-10">
-                <h1 className="text-3xl font-bold text-gray-800">Welcome, {user?.full_name || user?.email}!</h1>
-                <p className="mt-2 text-gray-600">Here are the services available to you. Select a service to get started.</p>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Welcome, {user?.full_name || user?.email}!</h1>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">Here are the services available to you. Select a service to get started.</p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

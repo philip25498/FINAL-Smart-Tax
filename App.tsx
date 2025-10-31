@@ -4,6 +4,7 @@ import React from 'react';
 // FIX: Changed import to namespace import to resolve module resolution errors.
 import * as ReactRouterDOM from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -20,7 +21,7 @@ const AppContent: React.FC = () => {
   const isHomePage = location.pathname === '/';
 
   return (
-    <div className={`flex flex-col min-h-screen text-gray-800 ${!isHomePage ? 'bg-gray-50' : ''}`}>
+    <div className={`flex flex-col min-h-screen text-gray-800 dark:text-gray-200 ${!isHomePage ? 'bg-gray-50 dark:bg-gray-800' : ''}`}>
       <Header />
       <main className={`flex-grow ${!isHomePage ? 'container mx-auto px-4 py-8' : ''}`}>
         {/* FIX: Replaced `Switch` with `Routes` and updated `Route` syntax for react-router-dom v6. */}
@@ -51,7 +52,9 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <ReactRouterDOM.HashRouter>
-        <AppContent />
+        <ThemeProvider>
+          <AppContent />
+        </ThemeProvider>
       </ReactRouterDOM.HashRouter>
     </AuthProvider>
   );

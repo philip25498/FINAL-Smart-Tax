@@ -1,44 +1,15 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 // FIX: Changed import to namespace import to resolve module resolution errors.
 import * as ReactRouterDOM from 'react-router-dom';
 
-const images = [
-  'https://images.unsplash.com/photo-1589262812352-5111961756a0?q=80&w=1920&auto=format&fit=crop', // Kenyan Flag
-  'https://images.unsplash.com/photo-1597823126231-641573c21a5a?q=80&w=1920&auto=format&fit=crop', // Kenyan youth with smartphone
-  'https://images.unsplash.com/photo-1621235391557-4279001362e6?q=80&w=1920&auto=format&fit=crop' // KRA Headquarters (Times Tower)
-];
-
 const HomePage: React.FC = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 2000); // Change image every 2 seconds
-
-    return () => clearInterval(intervalId);
-  }, []);
-
   return (
     <div 
-      className="relative text-center overflow-hidden min-h-[calc(100vh-200px)] flex items-center justify-center"
+      className="bg-gradient-to-br from-green-700 to-green-900 text-center min-h-[calc(100vh-200px)] flex items-center justify-center"
     >
-      {/* Background Image Slideshow */}
-      {images.map((src, index) => (
-        <img
-          key={src}
-          src={src}
-          alt={`Background slide ${index + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}
-        />
-      ))}
-      
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-
       {/* Content */}
-      <div className="relative z-10 py-16 md:py-24 text-white">
+      <div className="py-16 md:py-24 text-white">
         <h1 
           className="text-4xl md:text-6xl font-extrabold leading-tight"
           style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
